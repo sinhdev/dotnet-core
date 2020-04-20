@@ -10,12 +10,15 @@ namespace UsingEntityFrameworkCore
             VideoGameCRUD videoGameCRUD = new VideoGameCRUD();
 
             // Add some video games.
-            videoGameCRUD.CreateVideoGame(new VideoGame
+            if (videoGameCRUD.CreateVideoGame(new VideoGame
             {
                 Id = 1,
                 Title = "Street Fighter IV",
                 Platform = "PS4"
-            });
+            }) < 0)
+            {
+                Console.WriteLine("Create Video Game Error!");
+            }
             videoGameCRUD.CreateVideoGame(new VideoGame
             {
                 Id = 2,
@@ -43,7 +46,9 @@ namespace UsingEntityFrameworkCore
             if (videoGameCRUD.Update(videoGame))
             {
                 Console.WriteLine("Update Video Game Complete!");
-            }else{
+            }
+            else
+            {
                 Console.WriteLine("Update Video Game Not Complete!");
             }
 
@@ -52,6 +57,9 @@ namespace UsingEntityFrameworkCore
             {
                 Console.WriteLine($"{vg.Id} - {vg.Title} - {vg.Platform}");
             }
+
+            // Delete All Data
+            videoGameCRUD.DeleteAllVideoGame();
         }
     }
 }

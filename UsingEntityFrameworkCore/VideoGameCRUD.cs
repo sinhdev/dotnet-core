@@ -9,8 +9,6 @@ namespace UsingEntityFrameworkCore
         {
             using (var context = new VideoGameDbContext())
             {
-                // The line below clears and resets the databse.
-                context.Database.EnsureDeleted();
                 // Create the database if it does not exist
                 context.Database.EnsureCreated();
             }
@@ -19,8 +17,15 @@ namespace UsingEntityFrameworkCore
         {
             using (var context = new VideoGameDbContext())
             {
-                context.VideoGames.Add(videoGame);
-                return context.SaveChanges();
+                try
+                {
+                    context.VideoGames.Add(videoGame);
+                    return context.SaveChanges();
+                }
+                catch
+                {
+                    return -1;
+                }
             }
         }
         public List<VideoGame> ReadAll()
@@ -48,12 +53,14 @@ namespace UsingEntityFrameworkCore
                 return saveStatus > 0;
             }
         }
-        public bool DeleteAllVideoGame()
+        public int DeleteAllVideoGame()
         {
             using (var context = new VideoGameDbContext())
             {
-                context.Database.EnsureDeleted();
-                return true;
+                context.VideoGames.RemoveRange(
+                    from v in context.VideoGames 
+                    select v);
+                return context.SaveChanges();
             }
         }
     }

@@ -8,5 +8,14 @@ namespace UsingEntityFrameworkCore
         {
             optionsBuilder.UseSqlite("Filename=./VideoGame.db");
         }
+
+        public bool initDatabase()
+        {
+            // The line below clears and resets the databse.
+            bool deleted = this.Database.EnsureDeleted();
+            // Create the database if it does not exist
+            bool created = this.Database.EnsureCreated();
+            return deleted && created;
+        }
     }
 }
